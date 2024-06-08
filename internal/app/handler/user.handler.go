@@ -4,7 +4,6 @@ import (
 	"encoding/json"
 	"myapp/internal/app/service"
 	"myapp/internal/model"
-	"myapp/internal/utils/mongoutil"
 	"myapp/pkg/response"
 	"net/http"
 
@@ -23,13 +22,19 @@ func GetUser(w http.ResponseWriter, r *http.Request) {
 }
 
 func CreateUser(w http.ResponseWriter, r *http.Request) {
-    var user model.User
-    err := json.NewDecoder(r.Body).Decode(&user)
-    user.ID = mongoutil.GenerateId()
+    var input model.CreateUserInput
+    err := json.NewDecoder(r.Body).Decode(&input)
     if err != nil {
         response.JSON(w, http.StatusBadRequest, "Invalid request payload")
         return
     }
+
+    user,err := model.NewUser(input)
+    if err != nil {
+        response.JSON(w, http.StatusInternalServerError, err.Error())
+        return
+    }
+    
     _,err = service.CreateUser(user)
     if err != nil {
         response.JSON(w, http.StatusInternalServerError, err.Error())
