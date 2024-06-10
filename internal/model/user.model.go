@@ -59,27 +59,20 @@ func NewUser(input CreateUserInput) (User, error) {
     },nil
 }
 
-type Plan int
+type Plan string
 
 const (
-    Free Plan = iota
-    Basic
-    Premium
+    BasicPlan    Plan = "free"
+    PremiumPlan Plan = "premium"
 )
 
-// String method to provide a human-readable representation of the enum values
-func (p Plan) String() string {
-    return [...]string{"Free", "Basic", "Premium"}[p]
-}
 
 // ParsePlan converts a string to a Plan type
 func ParsePlan(plan string) Plan {
     switch plan {
-    case "Basic":
-        return Basic
     case "Premium":
-        return Premium
+        return PremiumPlan
     default:
-        return Free
+        return BasicPlan
     }
 }
