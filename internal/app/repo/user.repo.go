@@ -34,13 +34,13 @@ func FindOneUserById(id string) (model.User, error) {
     var user model.User
 
     // Find the user by ObjectID
-    err = collection.FindOne(context.TODO(), bson.M{"_id": objectID}).Decode(&user)
+    err = collection.FindOne(context.Background(), bson.M{"_id": objectID}).Decode(&user)
     if err != nil {
         log.Printf("Error finding user: %v", err)
         return model.User{}, err
     }
 
-    log.Printf("Found user: %+v", user)
+    // log.Printf("Found user: %+v", user)
     return user, nil
 }
 
