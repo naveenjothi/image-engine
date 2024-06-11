@@ -17,6 +17,6 @@ func NewRouter() *mux.Router {
     protected := r.PathPrefix("/protected").Subrouter()
     protected.Use(middleware.JWTMiddleware)
     protected.HandleFunc("/users/{id}", handler.GetUser).Methods("GET")
-    // protected.HandleFunc("/users/{id}", handler.UpdateUser).Methods("PUT")
+    protected.HandleFunc("/users/{id}", handler.UpdateUser).Methods("PUT")
     return r
 }

@@ -44,11 +44,11 @@ func FindOneUserById(id string) (model.User, error) {
     return user, nil
 }
 
-func UpdateUser(id string, user model.User) (model.User, error) {
+func UpdateUser(id string, user model.User) (error) {
 	collection := mongoutil.GetCollection("user")
 	objectID, err := primitive.ObjectIDFromHex(id)
     if err != nil {
-        return model.User{}, err
+        return err
     }
    
 	_, err = collection.UpdateByID(context.Background(), objectID, bson.M{
@@ -56,13 +56,10 @@ func UpdateUser(id string, user model.User) (model.User, error) {
     })
 	
 	if err != nil {
-		return model.User{}, err
+		return err
 	}
-	var updatedUser model.User
-
-	collection.FindOne(context.Background(), bson.M{"_id": objectID}).Decode(&updatedUser)
-    
-	return updatedUser, nil
+	
+	return nil
 }
 
 func FindManyUserWithCursor() (*mongo.Cursor,error) {

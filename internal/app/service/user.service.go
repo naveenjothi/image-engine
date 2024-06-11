@@ -7,7 +7,7 @@ import (
 	"go.mongodb.org/mongo-driver/mongo"
 )
 
-func UpdateUser(id string, user model.User) (model.User, error) {
+func UpdateUser(id string, user model.User) error {
     return repo.UpdateUser(id, user)
 }
 

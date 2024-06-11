@@ -9,7 +9,7 @@ import (
 )
 
 type User struct {
-    ID                   primitive.ObjectID `bson:"_id,omitempty"`
+    Id                   primitive.ObjectID `json:"_id" bson:"_id,omitempty"`
     Name                 string             `json:"name" bson:"name"`
     Email                string             `json:"email" bson:"email"`
     Plan                 Plan             `json:"plan" bson:"plan"`
@@ -33,6 +33,17 @@ type CreateUserInput struct {
     IsEmailVerified      bool `json:"isEmailVerified"`
 }
 
+type UpdateUserInput struct {
+    Id                   string `json:"_id"`
+    Name                 string `json:"name"`
+    Email                string `json:"email"`
+    Plan                 string `json:"plan"`
+    Password         string `json:"passwordHash"`
+    Mobile               string `json:"mobile"`
+    IsMobileNumberVerified bool `json:"isMobileNumberVerified"`
+    IsEmailVerified      bool `json:"isEmailVerified"`
+}
+
 
 func NewUser(input CreateUserInput) (User, error) {
     passwordHash, err := bcryptutil.HashPassword(input.Password)
@@ -44,7 +55,7 @@ func NewUser(input CreateUserInput) (User, error) {
 
     now := time.Now()
     return User{
-        ID:                     mongoutil.GenerateId(),
+        Id:                     mongoutil.GenerateId(),
         Name:                   input.Name,
         Email:                  input.Email,
         Plan:                   plan,
