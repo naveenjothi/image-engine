@@ -60,7 +60,12 @@ func UpdateUser(w http.ResponseWriter, r *http.Request) {
         return
     }
 
-    jsonutil.MergeStructs(&user,&input)
+    err = jsonutil.MergeStructs(&user,&input)
+
+    if err != nil {
+        response.JSON(w, http.StatusInternalServerError, err.Error())
+        return
+    }
     
     err = service.UpdateUser(params["id"],user)
     if err != nil {
